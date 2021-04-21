@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.debug = True 
 
 db = pymysql.connect(
-  host='localhost',
+  host ='localhost',
   port = 3306,
   user = 'root',
   password = '1234',
@@ -85,11 +85,16 @@ def delete(id):
 
 @app.route('/<int:id>/edit', methods=["GET", "POST"])
 def edit(id):
+    cursor = db.cursor()
     if request.method == "POST":
         return "Success"
     
     else:
-        return render_template("edit_article.html")
+        sql = "SELECT * FROM topic WHERE id = {}" .format(id)
+        cursor.execute(sql)
+        topic = cursor.fetchone()
+        print(topic[1])
+        return render_template("edit_article.html", article = topic)
     
 
 
