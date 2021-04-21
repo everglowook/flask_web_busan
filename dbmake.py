@@ -24,7 +24,7 @@ title = input('제목을 적으세요')
 body = input("내용을 적으세요")
 author = input("누구세요?")
 
-input_data = [title,body,author ]
+input_data = [title,body,author]
 cursor = db.cursor()
 cursor.execute(sql_3,input_data)
 db.commit()
