@@ -29,7 +29,7 @@ def articles():
     sql = 'SELECT * FROM topic;'
     cursor.execute(sql)
     topics = cursor.fetchall()
-    print(topics)
+    # print(topics)
     # articles = Articles()
     # print(articles[0]['title'])
     return render_template("articles.html", articles = topics)
@@ -40,7 +40,7 @@ def article(id):
     sql = 'SELECT * FROM topic WHERE id={}'. format(id)
     cursor.execute(sql)
     topic = cursor.fetchone()
-    print(topic)
+    # print(topic)
     # articles = Articles()
     # article = articles[id-1]
     # print(articles[id-1])
@@ -57,13 +57,13 @@ def add_articles():
         sql = "INSERT INTO `topic` (`title`, `body`, `author`) VALUES (%s, %s, %s);"
         input_data = [title,desc,author]
 
-        print(request.form['author'])
+        # print(request.form['author'])
 
 
         cursor.execute(sql, input_data)
         db.commit()
         # db.close()
-        print(cursor.rowcount)
+        # print(cursor.rowcount)
         return redirect("/articles") 
 
     # return "<h1>글쓰기 페이지</h1>"
@@ -87,17 +87,23 @@ def delete(id):
 def edit(id):
     cursor = db.cursor()
     if request.method == "POST":
-        return "Success"
+        title = request.form['title']
+        desc = request.form['desc']
+        sql = 'UPDATE topic SET title = %s, `body` = %s WHERE id = {};'.format(id)
+        input_data = [title, desc]
+        cursor.execute(sql, input_data)
+        db.commit()
+
+        print(request.form['title'])
+        return redirect('/articles')
     
     else:
         sql = "SELECT * FROM topic WHERE id = {}" .format(id)
         cursor.execute(sql)
         topic = cursor.fetchone()
-        print(topic[1])
+        # print(topic)
         return render_template("edit_article.html", article = topic)
     
-
-
 
 if __name__ == '__main__':
     app.run() 
